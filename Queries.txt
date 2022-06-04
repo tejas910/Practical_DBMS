@@ -1,0 +1,434 @@
+
+Assignment On Company database
+
+create table EMP(
+    EMPNO int(10),
+     ENAME varchar(20),
+     JOB char(10),
+     MGR int(20),
+     HIREDATE date,
+     SAL int(20),
+     COMM int(20),
+
+     DEPTNO int(10));
+
+create table DEPT(
+    DEPTNO int(10),
+    DNAME varchar(20),
+    LOC varchar(20));
+
+
+
+insert into EMP values 
+(7369,'Smith', 'Clerk',7902,'1980/12/17',800,NULL,20),
+(7499,'Allen','Salesman',7698,'1981/2/20',1600,300,30),
+(7521,'Ward','Salesman',7698,'1981/2/22',1250,500,30),
+(7566,'Jones','Manager',7839,'1981/4/2',2975,NULL,20),
+(7654,'Martin','Salesman',7698,'1981/9/28',1250,1400,30),
+(7698,'Blake','Manager',7839,'1981/5/1',2850,NULL,30),
+(7782,'Clark','Manager',7839,'1981/6/9',2450,NULL,10),
+(7788,'Scott','Analyst',7566,'1982/12/9',3000,NULL,20),
+(7839,'King','President',NULL,'1981/11/17',5000,NULL,10),
+(7844,'Turner','Salesman',7698,'1981/9/8',1500,0,30),
+(7876,'Adams','Clerk',7788,'1983/1/12',1100,NULL,20),
+(7900,'James','Clerk',7698,'1981/12/3',950,NULL,30),
+(7902,'Ford','Analyst',7566,'1981/12/4',3000,NULL,20),
+(7934,'Miller','Clerk',7782, '1982/1/23' ,1300 ,NULL,10);
+
+insert into DEPT values (10,'Accounting','New York'),
+(20,'Research','Dallas'),
+(30,'Sales','Chicago'),
+(40,'Operations','Boston');
+
+1.  select ENAME from EMP where JOB='Analyst' or JOB ='Salesman';
++--------+
+| ENAME  |
++--------+
+| Allen  |
+| Ward   |
+| Martin |
+| Scott  |
+| Turner |
+| Ford   |
++--------+
+
+2.  select * from EMP where HIREDATE<'1981/09/30';
++-------+--------+----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB      | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+----------+------+------------+------+------+--------+
+|  7369 | Smith  | Clerk    | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7499 | Allen  | Salesman | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+|  7521 | Ward   | Salesman | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7566 | Jones  | Manager  | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+|  7654 | Martin | Salesman | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+|  7698 | Blake  | Manager  | 7839 | 1981-05-01 | 2850 | NULL |     30 |
+|  7782 | Clark  | Manager  | 7839 | 1981-06-09 | 2450 | NULL |     10 |
+|  7844 | Turner | Salesman | 7698 | 1981-09-08 | 1500 |    0 |     30 |
++-------+--------+----------+------+------------+------+------+--------+
+
+3.  select ENAME from EMP where JOB!='Manager';
++--------+
+| ENAME  |
++--------+
+| Smith  |
+| Allen  |
+| Ward   |
+| Martin |
+| Scott  |
+| King   |
+| Turner |
+| Adams  |
+| James  |
+| Ford   |
+| Miller |
++--------+
+
+4> SELECT * FROM EMP WHERE EMPNO IN (7369,7521,7839,7788,7934);
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | Smith  | Clerk     | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7521 | Ward   | Salesman  | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7788 | Scott  | Analyst   | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+|  7839 | King   | President | NULL | 1981-11-17 | 5000 | NULL |     10 |
+|  7934 | Miller | Clerk     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
++-------+--------+-----------+------+------------+------+------+--------+
+
+
+5> select * from EMP where DEPTNO<>10 AND DEPTNO<>30 AND  DEPTNO<>40 ;
++-------+-------+---------+------+------------+------+------+--------+
+| EMPNO | ENAME | JOB     | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+-------+---------+------+------------+------+------+--------+
+|  7369 | Smith | Clerk   | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7566 | Jones | Manager | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+|  7788 | Scott | Analyst | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+|  7876 | Adams | Clerk   | 7788 | 1983-01-12 | 1100 | NULL |     20 |
+|  7902 | Ford  | Analyst | 7566 | 1981-12-04 | 3000 | NULL |     20 |
++-------+-------+---------+------+------------+------+------+--------+
+
+6. select EMPNO from EMP where HIREDATE between "1981-06-30" and "1981-12-31";
+
++--------+
+| ENAME  |
++--------+
+| Martin |
+| King   |
+| Turner |
+| James  |
+| Ford   |
++--------+
+
+
+7. select distinct(JOB) from EMP;
++-----------+
+| JOB       |
++-----------+
+| Clerk     |
+| Salesman  |
+| Manager   |
+| Analyst   |
+| President |
++-----------+
+     OR
+mysql> SELECT JOB FROM EMP GROUP BY JOB;
++-----------+
+| JOB       |
++-----------+
+| Clerk     |
+| Salesman  |
+| Manager   |
+| Analyst   |
+| President |
++-----------+
+
+5 rows in set (0.12 sec)
+
+
+8.select ENAME from EMP where COMM IS NULL;
++--------+
+| ENAME  |
++--------+
+| Smith  |
+| Jones  |
+| Blake  |
+| Clark  |
+| Scott  |
+| King   |
+| Adams  |
+| James  |
+| Ford   |
+| Miller |
++--------+
+
+
+9. select ENAME from EMP where MGR IS NULL;
++-------+
+| ENAME |
++-------+
+| King  |
++-------+
+
+10.  select * from EMP where DEPTNO is null;
+Empty set (0.00 sec)
+
+11. select * from EMP where COMM is not null;
++-------+--------+----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB      | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+----------+------+------------+------+------+--------+
+|  7499 | Allen  | Salesman | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+|  7521 | Ward   | Salesman | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7654 | Martin | Salesman | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+|  7844 | Turner | Salesman | 7698 | 1981-09-08 | 1500 |    0 |     30 |
++-------+--------+----------+------+------------+------+------+--------+
+
+12> SELECT ENAME  FROM EMP WHERE ENAME LIKE 'S%' OR ENAME LIKE '%S';
++-------+
+| ENAME |
++-------+
+| Smith |
+| Jones |
+| Scott |
+| Adams |
+| James |
+
+
+13. select * from EMP where ENAME like '_i%';
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7839 | King   | President | NULL | 1981-11-17 | 5000 | NULL |     10 |
+|  7934 | Miller | Clerk     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
++-------+--------+-----------+------+------------+------+------+--------+
+
+14. select count(ENAME) from EMP;
++--------------+
+| count(ENAME) |
++--------------+
+|           14 |
++--------------+
+
+15. select count(distinct JOB) from EMP;
++---------------------+
+| count(distinct JOB) |
++---------------------+
+|                   5 |
++---------------------+
+
+16. select SUM(SAL) from EMP;
++----------+
+| SUM(SAL) |
++----------+
+|    29025 |
++----------+
+
+17.  select min(SAL),max(SAL),AVG(SAL) from EMP;
++----------+----------+-----------+
+| min(SAL) | max(SAL) | AVG(SAL)  |
++----------+----------+-----------+
+|      800 |     5000 | 2073.2143 |
++----------+----------+-----------+
+1 row in set (0.00 sec)
+
+18.  select max(SAL) from EMP where JOB='Salesman';
++----------+
+| max(SAL) |
++----------+
+|     1600 |
++----------+
+
+
+----------------------------------- DEPT TABLE---------------------------
+1.  select count(*), AVG(SAL) from EMP where DEPTNO = 20;
++----------+-----------+
+| count(*) | AVG(SAL)  |
++----------+-----------+
+|        5 | 2175.0000 |
++----------+-----------+
+
+2.  select ENAME,SAL,SAL*0.1 as PF from EMP;
++--------+------+-------+
+| ENAME  | SAL  | PF    |
++--------+------+-------+
+| Smith  |  800 |  80.0 |
+| Allen  | 1600 | 160.0 |
+| Ward   | 1250 | 125.0 |
+| Jones  | 2975 | 297.5 |
+| Martin | 1250 | 125.0 |
+| Blake  | 2850 | 285.0 |
+| Clark  | 2450 | 245.0 |
+| Scott  | 3000 | 300.0 |
+| King   | 5000 | 500.0 |
+| Turner | 1500 | 150.0 |
+| Adams  | 1100 | 110.0 |
+| James  |  950 |  95.0 |
+| Ford   | 3000 | 300.0 |
+| Miller | 1300 | 130.0 |
++--------+------+-------+
+
+3.> SELECT ENAME FROM EMP WHERE (1984 - year(HIREDATE)>2);
++--------+
+| ENAME  |
++--------+
+| Smith  |
+| Allen  |
+| Ward   |
+| Jones  |
+| Martin |
+| Blake  |
+| Clark  |
+| King   |
+| Turner |
+| James  |
+| Ford   |
++--------+
+11 rows in set (0.00 sec)
+
+
+4. select * from EMP order by SAL;
++-------+--------+-----------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+-----------+------+------------+------+------+--------+
+|  7369 | Smith  | Clerk     | 7902 | 1980-12-17 |  800 | NULL |     20 |
+|  7900 | James  | Clerk     | 7698 | 1981-12-03 |  950 | NULL |     30 |
+|  7876 | Adams  | Clerk     | 7788 | 1983-01-12 | 1100 | NULL |     20 |
+|  7521 | Ward   | Salesman  | 7698 | 1981-02-22 | 1250 |  500 |     30 |
+|  7654 | Martin | Salesman  | 7698 | 1981-09-28 | 1250 | 1400 |     30 |
+|  7934 | Miller | Clerk     | 7782 | 1982-01-23 | 1300 | NULL |     10 |
+|  7844 | Turner | Salesman  | 7698 | 1981-09-08 | 1500 |    0 |     30 |
+|  7499 | Allen  | Salesman  | 7698 | 1981-02-20 | 1600 |  300 |     30 |
+|  7782 | Clark  | Manager   | 7839 | 1981-06-09 | 2450 | NULL |     10 |
+|  7698 | Blake  | Manager   | 7839 | 1981-05-01 | 2850 | NULL |     30 |
+|  7566 | Jones  | Manager   | 7839 | 1981-04-02 | 2975 | NULL |     20 |
+|  7788 | Scott  | Analyst   | 7566 | 1982-12-09 | 3000 | NULL |     20 |
+|  7902 | Ford   | Analyst   | 7566 | 1981-12-04 | 3000 | NULL |     20 |
+|  7839 | King   | President | NULL | 1981-11-17 | 5000 | NULL |     10 |
++-------+--------+-----------+------+------------+------+------+--------+
+
+5. select ENAME,HIREDATE FROM EMP order by HIREDATE DESC;
++--------+------------+
+| ENAME  | HIREDATE   |
++--------+------------+
+| Adams  | 1983-01-12 |
+| Scott  | 1982-12-09 |
+| Miller | 1982-01-23 |
+| Ford   | 1981-12-04 |
+| James  | 1981-12-03 |
+| King   | 1981-11-17 |
+| Martin | 1981-09-28 |
+| Turner | 1981-09-08 |
+| Clark  | 1981-06-09 |
+| Blake  | 1981-05-01 |
+| Jones  | 1981-04-02 |
+| Ward   | 1981-02-22 |
+| Allen  | 1981-02-20 |
+| Smith  | 1980-12-17 |
++--------+------------+
+
+6.  select EMPNAME,SAL,SAL*01 as PF,SAL*0.5 as HRA, SAL*0.3 as DA,SAL*0.9 as gross from EMP order by gross;
+---------+------+------+--------+--------+--------+
+| EMPNAME | SAL  | PF   | HRA    | DA     | gross  |
++---------+------+------+--------+--------+--------+
+| Smith   |  800 |  800 |  400.0 |  240.0 |  720.0 |
+| James   |  950 |  950 |  475.0 |  285.0 |  855.0 |
+| Adams   | 1100 | 1100 |  550.0 |  330.0 |  990.0 |
+| Ward    | 1250 | 1250 |  625.0 |  375.0 | 1125.0 |
+| Martin  | 1250 | 1250 |  625.0 |  375.0 | 1125.0 |
+| Miller  | 1300 | 1300 |  650.0 |  390.0 | 1170.0 |
+| Turner  | 1500 | 1500 |  750.0 |  450.0 | 1350.0 |
+| Allen   | 1600 | 1600 |  800.0 |  480.0 | 1440.0 |
+| Clark   | 2450 | 2450 | 1225.0 |  735.0 | 2205.0 |
+| Blake   | 2850 | 2850 | 1425.0 |  855.0 | 2565.0 |
+| Jones   | 2975 | 2975 | 1487.5 |  892.5 | 2677.5 |
+| Scott   | 3000 | 3000 | 1500.0 |  900.0 | 2700.0 |
+| Ford    | 3000 | 3000 | 1500.0 |  900.0 | 2700.0 |
+| King    | 5000 | 5000 | 2500.0 | 1500.0 | 4500.0 |
++---------+------+------+--------+--------+--------+
+
+
+7. select distinct(DEPTNO),count(DEPTNO) from EMP group by DEPTNO;
++--------+---------------+
+| DEPTNO | count(DEPTNO) |
++--------+---------------+
+|     20 |             5 |
+|     30 |             6 |
+|     10 |             3 |
++--------+---------------+
+
+8. select distinct(DEPTNO),sum(SAL) from EMP group by DEPTNO;
++--------+----------+
+| DEPTNO | sum(SAL) |
++--------+----------+
+|     20 |    10875 |
+|     30 |     9400 |
+|     10 |     8750 |
++--------+----------+
+
+9. select distinct(JOB),count(*) from EMP group by JOB;
++-----------+----------+
+| JOB       | count(*) |
++-----------+----------+
+| Clerk     |        4 |
+| Salesman  |        4 |
+| Manager   |        3 |
+| Analyst   |        2 |
+| President |        1 |
++-----------+----------+
+
+10.  select distinct(JOB), sum(SAL), min(SAL), max(SAL), avg(SAL) from EMP group by JOB;
++-----------+----------+----------+----------+-----------+
+| JOB       | sum(SAL) | min(SAL) | max(SAL) | avg(SAL)  |
++-----------+----------+----------+----------+-----------+
+| Clerk     |     4150 |      800 |     1300 | 1037.5000 |
+| Salesman  |     5600 |     1250 |     1600 | 1400.0000 |
+| Manager   |     8275 |     2450 |     2975 | 2758.3333 |
+| Analyst   |     6000 |     3000 |     3000 | 3000.0000 |
+| President |     5000 |     5000 |     5000 | 5000.0000 |
++-----------+----------+----------+----------+-----------+
+                     OR
+
+10> SELECT JOB,SUM(SAL),MIN(SAL),MAX(SAL),AVG(SAL) FROM EMP GROUP BY JOB;
++-----------+----------+----------+----------+-----------+
+| JOB       | SUM(SAL) | MIN(SAL) | MAX(SAL) | AVG(SAL)  |
++-----------+----------+----------+----------+-----------+
+| Clerk     |     4150 |      800 |     1300 | 1037.5000 |
+| Salesman  |     5600 |     1250 |     1600 | 1400.0000 |
+| Manager   |     8275 |     2450 |     2975 | 2758.3333 |
+| Analyst   |     6000 |     3000 |     3000 | 3000.0000 |
+| President |     5000 |     5000 |     5000 | 5000.0000 |
+
+
+11. select  sum(SAL), min(SAL), max(SAL), avg(SAL) from EMP where DEPTNO = 20;
++----------+----------+----------+-----------+
+| sum(SAL) | min(SAL) | max(SAL) | avg(SAL)  |
++----------+----------+----------+-----------+
+|    10875 |      800 |     3000 | 2175.0000 |
++----------+----------+----------+-----------+
+
+12. select distinct(JOB),sum(SAL), min(SAL), max(SAL), avg(SAL) as average from EMP where DEPTNO = 20 group by JOB having average > 1000;
++---------+----------+----------+----------+-----------+
+| JOB     | sum(SAL) | min(SAL) | max(SAL) | average   |
++---------+----------+----------+----------+-----------+
+| Manager |     2975 |     2975 |     2975 | 2975.0000 |
+| Analyst |     6000 |     3000 |     3000 | 3000.0000 |
++---------+----------+----------+----------+-----------+
+
+                                 OR
+12> select JOB,SUM(SAL),MIN(SAL),MAX(SAL),AVG(SAL) FROM EMP WHERE DEPTNO=20 GROUP BY JOB HAVING AVG(SAL)>1000;
++---------+----------+----------+----------+-----------+
+| JOB     | SUM(SAL) | MIN(SAL) | MAX(SAL) | AVG(SAL)  |
++---------+----------+----------+----------+-----------+
+| Manager |     2975 |     2975 |     2975 | 2975.0000 |
+| Analyst |     6000 |     3000 |     3000 | 3000.0000 |
++---------+----------+----------+----------+-----------+
+2 rows in set (0.01 sec)
+
+
+
+1. List the all employee whose sal is greater than adams sal.
+2. List the number of employee in each job whose sal is greater than avg sal of all employee.
+3. list the second lower most sal person from organization.
+4. list the all employee who has joined in first week.
+5. list the all employee who have joined second quarter of year.
+6. list the all employee whose name consist of 'am' substring.
+7. list the number of employee in each job whose sal is greater than avg sal of all employee except salesman job.
+

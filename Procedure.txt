@@ -1,0 +1,163 @@
+mysql> create table student 
+    -> (
+    -> sno int(10),
+    -> name varchar(10),
+    -> sub1 int(3),
+    -> sub2 int(3),
+    -> sub3 int(3),
+    -> total int(3),
+    -> percentage float(5,2),
+    -> grade varchar(20)
+    -> );
+Query OK, 0 rows affected, 6 warnings (1.74 sec)
+
+mysql> insert into student
+    	 values
+     (1,'AMIT',55,66,77,NULL,NULL,NULL),
+     (2,'AJIT',66,44,77,NULL,NULL,NULL),
+     (3,'VIRAT',50,60,70,NULL,NULL,NULL),
+     (4,'JIT',30,30,30,NULL,NULL,NULL),
+     (5,'RAHUL',52,62,57,NULL,NULL,NULL),
+     (6,'KAPIL',65,45,75,NULL,NULL,NULL),
+     (7,'ROHIT',52,60,50,NULL,NULL,NULL),
+     (8,'SUSHIL',67,46,75,NULL,NULL,NULL),
+     (9,'SACHIN',50,50,50,NULL,NULL,NULL),
+     (10,'SUNIL',60,40,70,NULL,NULL,NULL);
+Query OK, 10 rows affected (0.22 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++------+--------+------+------+------+-------+------------+-------+
+| sno  | name   | sub1 | sub2 | sub3 | total | percentage | grade |
++------+--------+------+------+------+-------+------------+-------+
+|    1 | AMIT   |   55 |   66 |   77 |  NULL |       NULL | NULL  |
+|    2 | AJIT   |   66 |   44 |   77 |  NULL |       NULL | NULL  |
+|    3 | VIRAT  |   50 |   60 |   70 |  NULL |       NULL | NULL  |
+|    4 | JIT    |   30 |   30 |   30 |  NULL |       NULL | NULL  |
+|    5 | RAHUL  |   52 |   62 |   57 |  NULL |       NULL | NULL  |
+|    6 | KAPIL  |   65 |   45 |   75 |  NULL |       NULL | NULL  |
+|    7 | ROHIT  |   52 |   60 |   50 |  NULL |       NULL | NULL  |
+|    8 | SUSHIL |   67 |   46 |   75 |  NULL |       NULL | NULL  |
+|    9 | SACHIN |   50 |   50 |   50 |  NULL |       NULL | NULL  |
+|   10 | SUNIL  |   60 |   40 |   70 |  NULL |       NULL | NULL  |
++------+--------+------+------+------+-------+------------+-------+
+10 rows in set (0.00 sec)
+
+
+mysql> DELIMITER //
+mysql> create procedure calpercentage()
+    -> begin
+    -> declare s1,s2,s3,tot int(3);
+    -> declare per float(5,2);
+    -> declare grde varchar(20);
+    -> declare i,cnt,id int(10);
+    -> SET i=0;
+    -> select count(*) into cnt from student;
+    -> while i<cnt do
+    -> select sno,sub1,sub2,sub3 into id,s1,s2,s3 from student limit i,1;
+    -> SET tot=(s1+s2+s3);
+    -> SET per=tot/3;
+    -> if per>40 then
+    -> SET grde='PASS';
+    -> else
+    -> SET grde='FAIL';
+    -> end If;
+    -> SELECT tot,per,grde;
+    -> update student SET total=tot,percentage=per,grade=grde where sno=id;
+    -> SET i=i+1;
+    -> end while;
+    -> end //
+Query OK, 0 rows affected, 3 warnings (0.34 sec)
+
+mysql> call calpercentage()//
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  198 | 66.00 | PASS |
++------+-------+------+
+1 row in set (0.10 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  187 | 62.33 | PASS |
++------+-------+------+
+1 row in set (0.20 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  180 | 60.00 | PASS |
++------+-------+------+
+1 row in set (0.28 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|   90 | 30.00 | FAIL |
++------+-------+------+
+1 row in set (0.53 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  171 | 57.00 | PASS |
++------+-------+------+
+1 row in set (0.63 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  185 | 61.67 | PASS |
++------+-------+------+
+1 row in set (0.72 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  162 | 54.00 | PASS |
++------+-------+------+
+1 row in set (0.80 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  188 | 62.67 | PASS |
++------+-------+------+
+1 row in set (0.92 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  150 | 50.00 | PASS |
++------+-------+------+
+1 row in set (1.01 sec)
+
++------+-------+------+
+| tot  | per   | grde |
++------+-------+------+
+|  170 | 56.67 | PASS |
++------+-------+------+
+1 row in set (1.09 sec)
+
+Query OK, 1 row affected (1.18 sec)
+
+select * from student;
+ -> //
++------+--------+------+------+------+-------+------------+-------+
+| sno  | name   | sub1 | sub2 | sub3 | total | percentage | grade |
++------+--------+------+------+------+-------+------------+-------+
+|    1 | AMIT   |   55 |   66 |   77 |   198 |      66.00 | PASS  |
+|    2 | AJIT   |   66 |   44 |   77 |   187 |      62.33 | PASS  |
+|    3 | VIRAT  |   50 |   60 |   70 |   180 |      60.00 | PASS  |
+|    4 | JIT    |   30 |   30 |   30 |    90 |      30.00 | FAIL  |
+|    5 | RAHUL  |   52 |   62 |   57 |   171 |      57.00 | PASS  |
+|    6 | KAPIL  |   65 |   45 |   75 |   185 |      61.67 | PASS  |
+|    7 | ROHIT  |   52 |   60 |   50 |   162 |      54.00 | PASS  |
+|    8 | SUSHIL |   67 |   46 |   75 |   188 |      62.67 | PASS  |
+|    9 | SACHIN |   50 |   50 |   50 |   150 |      50.00 | PASS  |
+|   10 | SUNIL  |   60 |   40 |   70 |   170 |      56.67 | PASS  |
++------+--------+------+------+------+-------+------------+-------+
+10 rows in set (0.00 sec)
+
+

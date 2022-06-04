@@ -1,0 +1,86 @@
+Trigger
+
+INSERTED TRIGGER
+
+1. create trigger t1 after insert on emp for each row BEGIN DECLARE act_type char(20); set act_type ='INSERTED';  insert into emp_log values(new.id,new.ename,new.sal,now(),act_type); end//
+
+select * from emp;
+    -> //
++------+-------+--------+
+| id   | ename | sal    |
++------+-------+--------+
+|    1 | Tejas | 800000 |
+|    2 | RAJ   | 400000 |
+|    3 | JIT   | 300020 |
+|    4 | AMIT  |  30002 |
++------+-------+--------+
+4 rows in set (0.00 sec)
+
+
+ select * from emp_log;
+    -> //
++------+-------+-------+---------------------+---------------+
+| id   | ename | sal   | activity_time       | activity_type |
++------+-------+-------+---------------------+---------------+
+|    4 | AMIT  | 30002 | 2022-04-29 11:02:27 | INSERTED      |
++------+-------+-------+---------------------+---------------+
+1 row in set (0.00 sec)
+
+
+DELETED TRIGGER
+
+2. create trigger t2 after delete on emp for each row BEGIN DECLARE act_type char(20); set act_type ='DELETED'; insert into emp_log values(old.id,old.ename,old.sal,now(),activity_type); end//
+Query OK, 0 rows affected (0.11 sec)
+
+delete from emp where id = 5;
+    -> //
+
+select * from emp
+    -> //
++------+-------+--------+
+| id   | ename | sal    |
++------+-------+--------+
+|    1 | Tejas | 800000 |
+|    2 | RAJ   | 400000 |
+|    3 | JIT   | 300020 |
+|    4 | AMIT  |  30002 |
++------+-------+--------+
+
+
+select * from emp_log;//
++------+---------+--------+---------------------+---------------+
+| id   | ename   | sal    | activity_time       | activity_type |
++------+---------+--------+---------------------+---------------+
+|    4 | AMIT    |  30002 | 2022-04-29 11:02:27 | INSERTED      |
+|    5 | Khilesh | 403012 | 2022-04-29 11:12:16 | INSERTED      |
+|    5 | Khilesh | 403012 | 2022-04-29 11:18:59 | DELETED          |
++------+---------+--------+---------------------+---------------+
+
+
+
+Updated Trigger
+3. create trigger t3 after update on emp for each row BEGIN DECLARE act_type varchar(20); set act_type ='UPDATED'; insert into emp_log values(new.id,new.ename,new.sal,now(),act_type); end//
+Query OK, 0 rows affected (0.12 sec)
+
+select * from emp;
+    -> //
++------+-------+--------+
+| id   | ename | sal    |
++------+-------+--------+
+|    1 | Tejas | 800000 |
+|    2 | RAJ   | 400000 |
+|    3 | JIT   | 300020 |
+|    4 | AMIT  | 500000 |
++------+-------+--------+
+
+select * from emp_log;//
++------+---------+--------+---------------------+---------------+
+| id   | ename   | sal    | activity_time       | activity_type |
++------+---------+--------+---------------------+---------------+
+|    4 | AMIT    |  30002 | 2022-04-29 11:02:27 | INSERTED      |
+|    5 | Khilesh | 403012 | 2022-04-29 11:12:16 | INSERTED      |
+|    5 | Khilesh | 403012 | 2022-04-29 11:18:59 | DELETED
+|    4 | AMIT    | 500000 | 2022-04-29 11:39:33 | UPDATED       |
++------+---------+--------+---------------------+---------------+
+6 rows in set (0.00 sec)
+

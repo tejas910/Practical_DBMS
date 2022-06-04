@@ -1,0 +1,12 @@
+CREATE FUNCTION grt(a INT,b INT,c INT) 
+RETURNS INT
+ DETERMINISTIC  
+ BEGIN
+ if a>b AND a>c then
+ RETURN a;
+ end if;
+ if b>c AND b>a then
+ RETURN b;
+ end if;
+ RETURN c;
+end;
